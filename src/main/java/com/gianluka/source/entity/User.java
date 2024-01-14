@@ -1,5 +1,6 @@
 package com.gianluka.source.entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
+@Entity
 @Setter
 @Table(name = "tb_usuario")
 public class User {
