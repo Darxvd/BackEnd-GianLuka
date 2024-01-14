@@ -17,7 +17,7 @@ public class SexController {
 	@Autowired
 	private SexService serviceSex;
 	
-	@GetMapping("/listar")
+	@GetMapping("/list")
 	public List<Sex> listSex(){
 		return serviceSex.listSex();
 	}
