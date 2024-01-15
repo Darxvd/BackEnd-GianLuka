@@ -32,5 +32,5 @@ public class Person {
     @ManyToOne
     @JoinColumn(name = "idTipo", insertable = false, updatable = false)
     private Type objType;
-
+    
 }

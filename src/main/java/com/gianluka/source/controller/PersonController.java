@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.gianluka.source.entity.Person;
 import com.gianluka.source.service.PersonService;
 
@@ -47,8 +46,9 @@ public class PersonController {
 	@ResponseBody
 	public Person register(@RequestBody Person person) {
 		person.setActivoPersona("A");
-		return servicePerson.register(person);
+	    return servicePerson.register(person);
 	}
+	
 	
 	@PutMapping("/update/{id}")
 	@ResponseBody
@@ -60,7 +60,6 @@ public class PersonController {
 		tmpperson.setCorreoPersona(person.getCorreoPersona());
 		tmpperson.setFnaciPersona(person.getFnaciPersona());
 		tmpperson.setCeluPersona(person.getCeluPersona());
-		tmpperson.setActivoPersona(person.getActivoPersona());
 		tmpperson.setIdSexo(person.getIdSexo());
 		tmpperson.setIdTipo(person.getIdTipo());
 		return servicePerson.update(tmpperson);
@@ -72,5 +71,13 @@ public class PersonController {
 		person.setActivoPersona("I");
 		servicePerson.update(person);
 	}
-
+	
+	@DeleteMapping("/delete/definit/{id}")
+	public void deleteDefinit(@PathVariable int id) {
+		Person person = servicePerson.findByIdPerson(id);
+		servicePerson.delete(person);
+	}
+	
+	
+	
 }
