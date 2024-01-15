@@ -56,7 +56,6 @@ public class TypeController {
 	    Type tmptype = serviceType.findByIdType(idType);
 	    tmptype.setNomTipo(type.getNomTipo());
 	    tmptype.setDesTipo(type.getDesTipo());
-	    tmptype.setActivoTipo(type.getActivoTipo());
 	    return serviceType.update(tmptype);
 	}
 	
@@ -65,5 +64,11 @@ public class TypeController {
 		Type type = serviceType.findByIdType(id);
 		type.setActivoTipo("I");
 		serviceType.update(type);
+	}
+	
+	@DeleteMapping("/delete/definit/{id}")
+	public void deleteDefinit(@PathVariable int id) {
+		Type type = serviceType.findByIdType(id);
+		serviceType.delete(type);
 	}
 }

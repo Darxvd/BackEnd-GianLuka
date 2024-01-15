@@ -23,5 +23,4 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "idPersona", insertable = false, updatable = false)
     private Person objPerson;
-
 }
