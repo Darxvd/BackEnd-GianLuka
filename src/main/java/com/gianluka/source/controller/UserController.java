@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +40,7 @@ public class UserController {
 	public List<User> listAllInactive(){
 		return serviceUser.listfindAllInactive();
 	}
-	
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/login")
 	@ResponseBody
 	public User login(@RequestBody LoginDto loginRequest) {
