@@ -13,6 +13,6 @@ import lombok.Setter;
 public class Country {
 	@Id
 	private int idPais;
-	private String desPpais;
+	private String desPais;
 	private String nacPais;
 }
