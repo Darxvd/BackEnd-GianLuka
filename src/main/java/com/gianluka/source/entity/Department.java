@@ -1,5 +1,8 @@
 package com.gianluka.source.entity;
 
+import org.springframework.boot.context.properties.bind.Name;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -13,13 +16,18 @@ import lombok.Setter;
 @Entity
 @Table(name = "tb_departamentos")
 public class Department {
-	@Id
-	private int idDepartamento;
-	private String desDepartamento;
-	private int idPais; 
-	
-	@ManyToOne
-	@JoinColumn(name = "idPais", insertable = false, updatable = false)
-	private Country objCountry;
+    @Id
+    @Column(name = "id_departamento")
+    private int idDepartamento;
+    
+    @Column(name = "des_departamento")
+    private String desDepartamento;
+    
+    @Column(name = "id_pais")
+    private int idPais;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_pais", insertable = false, updatable = false)
+    private Country objCountry;
 
 }
