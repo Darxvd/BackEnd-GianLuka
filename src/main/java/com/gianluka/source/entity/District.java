@@ -1,5 +1,6 @@
 package com.gianluka.source.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -14,12 +15,15 @@ import lombok.Setter;
 @Table(name = "tb_distrito")
 public class District {
 	@Id
+	@Column(name = "id_distrito")
 	private int idDistrito;
+	@Column(name = "des_distrito")
 	private String desDistrito;
+	@Column(name = "id_provincia")
 	private int idProvincia;
 	
 	@ManyToOne
-	@JoinColumn(name = "idProvincia", insertable = false, updatable = false)
+	@JoinColumn(name = "id_provincia", insertable = false, updatable = false)
 	private Province objProvince;
 
 }

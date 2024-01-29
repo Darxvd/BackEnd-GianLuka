@@ -3,6 +3,9 @@ package com.gianluka.source.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,61 +19,89 @@ import com.gianluka.source.entity.Person;
 import com.gianluka.source.service.PersonService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/person")
 public class PersonController {
+	
+	private final PersonService servicePerson;
+	
+	public PersonController(PersonService servicePerson) {
+		this.servicePerson = servicePerson;
+	}
 
-	@Autowired
-	private PersonService servicePerson;
 	
 	@GetMapping("/list-all")
-	public List<Person> listPerson(){
-		return servicePerson.listPerson();
+	public ResponseEntity<List<Person>> listPerson(){
+		return new ResponseEntity<>(servicePerson.listPerson(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/list-active")
-	public List<Person> listAllActive(){
-		return servicePerson.listfindAllActive();
+	public ResponseEntity<List<Person>> listAllActive(){
+		return new ResponseEntity<>(servicePerson.listfindAllActive(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/list-inactive")
-	public List<Person> listAllInactive(){
-		return servicePerson.listfindAllInactive();
+	public ResponseEntity<List<Person>> listAllInactive(){
+		return new ResponseEntity<>(servicePerson.listfindAllInactive(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/find/{idPerson}")
-	public Person findByIdPerson(@PathVariable("idPerson") int idPerson) {
-		return servicePerson.findByIdPerson(idPerson);
+	public ResponseEntity<Person> findByIdPerson(@PathVariable("idPerson") int idPerson) {
+	    if (idPerson > 0) {
+	        Person foundPerson = servicePerson.findByIdPerson(idPerson);
+	        
+	        if (foundPerson != null) {
+	            return new ResponseEntity<>(foundPerson, HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	        }
+	    } else {
+	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	    }
 	}
+
 	
 	@PostMapping("/register")
-	@ResponseBody
-	public Person register(@RequestBody Person person) {
+	public ResponseEntity<Person> register(@RequestBody Person person) {
 		person.setActivoPersona("A");
-	    return servicePerson.register(person);
+	    return new ResponseEntity<>(servicePerson.register(person), HttpStatus.CREATED);
 	}
 	
 	
 	@PutMapping("/update/{id}")
-	@ResponseBody
-	public Person update(@PathVariable("id") int idPerson, @RequestBody Person person) {
-		Person tmpperson = servicePerson.findByIdPerson(idPerson);
-		tmpperson.setNomPersona(person.getNomPersona());
-		tmpperson.setAplPersona(person.getAplPersona());
-		tmpperson.setDniPersona(person.getDniPersona());
-		tmpperson.setCorreoPersona(person.getCorreoPersona());
-		tmpperson.setFnaciPersona(person.getFnaciPersona());
-		tmpperson.setCeluPersona(person.getCeluPersona());
-		tmpperson.setIdSexo(person.getIdSexo());
-		tmpperson.setIdTipo(person.getIdTipo());
-		return servicePerson.update(tmpperson);
+	public ResponseEntity<Person> updatePerson(@PathVariable("id") int idPerson, @RequestBody Person updatedPerson) {
+	    Person existingPerson = servicePerson.findByIdPerson(idPerson);
+
+	    if (existingPerson != null) {
+	        existingPerson.setNomPersona(updatedPerson.getNomPersona());
+	        existingPerson.setAplPersona(updatedPerson.getAplPersona());
+	        existingPerson.setDniPersona(updatedPerson.getDniPersona());
+	        existingPerson.setCorreoPersona(updatedPerson.getCorreoPersona());
+	        existingPerson.setFnaciPersona(updatedPerson.getFnaciPersona());
+	        existingPerson.setCeluPersona(updatedPerson.getCeluPersona());
+	        existingPerson.setIdSexo(updatedPerson.getIdSexo());
+	        existingPerson.setIdTipo(updatedPerson.getIdTipo());
+
+	        Person updatedPersonResult = servicePerson.update(existingPerson);
+	        return new ResponseEntity<>(updatedPersonResult, HttpStatus.OK);
+	    } else {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public void delete(@PathVariable int id) {
-		Person person = servicePerson.findByIdPerson(id);
-		person.setActivoPersona("I");
-		servicePerson.update(person);
+	public ResponseEntity<List<Person>> deletePerson(@PathVariable int id) {
+	    Person person = servicePerson.findByIdPerson(id);
+	    if (person != null) {
+	        person.setActivoPersona("I");
+	        servicePerson.update(person);
+	        List<Person> activePersons = servicePerson.listfindAllActive();
+	        return new ResponseEntity<>(activePersons, HttpStatus.OK);
+	    } else {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
 	}
+
 	
 	@DeleteMapping("/delete/definit/{id}")
 	public void deleteDefinit(@PathVariable int id) {

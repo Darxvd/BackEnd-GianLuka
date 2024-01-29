@@ -1,7 +1,5 @@
 package com.gianluka.source.entity;
 
-import org.springframework.boot.context.properties.bind.Name;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
