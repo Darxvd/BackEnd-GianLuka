@@ -111,4 +111,38 @@ public class PersonController {
 	    List<Person> persons = servicePerson.listPersonByName(nombre);
 	    return new ResponseEntity<>(persons, HttpStatus.OK);
 	}	
+	
+	@PutMapping("/activate/{id}")
+	public ResponseEntity<Person> activatePerson(@PathVariable("id") int id) {
+	    Person existingPerson = servicePerson.findByIdPerson(id);
+
+	    if (existingPerson != null) {
+	        existingPerson.setActivoPersona("A");
+	        Person activatedPerson = servicePerson.update(existingPerson);
+	        return new ResponseEntity<>(activatedPerson, HttpStatus.OK);
+	    } else {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
