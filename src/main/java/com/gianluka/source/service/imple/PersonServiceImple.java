@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.gianluka.source.entity.Person;
 import com.gianluka.source.repository.PersonRepository;
 import com.gianluka.source.service.PersonService;
@@ -49,6 +48,11 @@ public class PersonServiceImple implements PersonService {
 	@Override
 	public void delete(Person objPerson) {
 		personRepository.delete(objPerson);
+	}
+
+	@Override
+	public List<Person> listPersonByName(String nombre) {
+		return personRepository.findByName(nombre);
 	}
 
 

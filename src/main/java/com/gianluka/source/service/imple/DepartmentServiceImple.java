@@ -20,6 +20,4 @@ public class DepartmentServiceImple implements DepartamentService{
 		return departamentRepository.findCountry(pais);
 	}
 	
-	
-	
 }
