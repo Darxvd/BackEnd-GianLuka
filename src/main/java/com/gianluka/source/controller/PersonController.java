@@ -42,6 +42,16 @@ public class PersonController {
 		return new ResponseEntity<>(servicePerson.listfindAllInactive(), HttpStatus.OK);
 	}
 	
+	@GetMapping("/list-by-type-active/{id}")
+	public ResponseEntity<List<Person>> listByTypeActive(@PathVariable int id) {
+	    return new ResponseEntity<>(servicePerson.listPersonByTypeActive(id), HttpStatus.OK);
+	}
+	
+	@GetMapping("/list-by-type-inactive/{id}")
+	public ResponseEntity<List<Person>> listByTypeInactive(@PathVariable int id) {
+	    return new ResponseEntity<>(servicePerson.listPersonByTypeInactive(id), HttpStatus.OK);
+	}
+
 	@GetMapping("/find/{idPerson}")
 	public ResponseEntity<Person> findByIdPerson(@PathVariable("idPerson") int idPerson) {
 	    if (idPerson > 0) {
@@ -101,14 +111,27 @@ public class PersonController {
 
 	
 	@DeleteMapping("/delete/definit/{id}")
-	public void deleteDefinit(@PathVariable int id) {
-		Person person = servicePerson.findByIdPerson(id);
-		servicePerson.delete(person);
+	public ResponseEntity<List<Person>> deleteDefinit(@PathVariable int id) {
+	    Person person = servicePerson.findByIdPerson(id);
+	    if (person == null) {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
+	    servicePerson.delete(person);
+	    List<Person> updatedPersonList = servicePerson.listfindAllInactive();
+
+	    return new ResponseEntity<>(updatedPersonList, HttpStatus.OK);
 	}
+
 	
-	@GetMapping("/list-by-name/{nombre}")
-	public ResponseEntity<List<Person>> findByName(@PathVariable("nombre") String nombre) {
-	    List<Person> persons = servicePerson.listPersonByName(nombre);
+	@GetMapping("/list-by-name-active/{nombre}")
+	public ResponseEntity<List<Person>> findByNameActive(@PathVariable("nombre") String nombre) {
+	    List<Person> persons = servicePerson.listPersonByNameActive(nombre);
+	    return new ResponseEntity<>(persons, HttpStatus.OK);
+	}	
+	
+	@GetMapping("/list-by-name-inactive/{nombre}")
+	public ResponseEntity<List<Person>> findByNameInactive(@PathVariable("nombre") String nombre) {
+	    List<Person> persons = servicePerson.listPersonByNameInactive(nombre);
 	    return new ResponseEntity<>(persons, HttpStatus.OK);
 	}	
 	
