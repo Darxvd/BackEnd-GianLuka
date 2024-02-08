@@ -33,6 +33,11 @@ public class TypeController {
 		return serviceType.listfindAllActive();
 	}
 	
+	@GetMapping("/list-active-find-type")
+	public List<Type> listAllActiveFindType(){
+		return serviceType.listfindAllActive();
+	}
+	
 	@GetMapping("/list-inactive")
 	public List<Type> listAllInactive(){
 		return serviceType.listfindAllInactive();

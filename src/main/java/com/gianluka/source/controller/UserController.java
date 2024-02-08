@@ -20,7 +20,7 @@ import com.gianluka.source.entity.User;
 import com.gianluka.source.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/login")
 public class UserController {
 	
 	@Autowired
@@ -40,7 +40,7 @@ public class UserController {
 	public List<User> listAllInactive(){
 		return serviceUser.listfindAllInactive();
 	}
-	@CrossOrigin(origins = "http://localhost:4200")
+	
 	@PostMapping("/login")
 	@ResponseBody
 	public User login(@RequestBody LoginDto loginRequest) {
