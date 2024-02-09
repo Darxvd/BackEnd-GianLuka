@@ -51,8 +51,23 @@ public class PersonServiceImple implements PersonService {
 	}
 
 	@Override
-	public List<Person> listPersonByName(String nombre) {
-		return personRepository.findByName(nombre);
+	public List<Person> listPersonByNameActive(String nombre) {
+		return personRepository.findByNameActive(nombre);
+	}
+
+	@Override
+	public List<Person> listPersonByNameInactive(String nombre) {
+		return personRepository.findByNameInactive(nombre);
+	}
+
+	@Override
+	public List<Person> listPersonByTypeActive(int id) {
+		return personRepository.findByTypePersonActive(id);
+	}
+	
+	@Override
+	public List<Person> listPersonByTypeInactive(int id) {
+		return personRepository.findByTypePersonInactive(id);
 	}
 
 

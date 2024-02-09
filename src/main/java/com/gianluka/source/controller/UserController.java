@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gianluka.source.dtos.LoginDto;
 import com.gianluka.source.entity.User;
+import com.gianluka.source.exception.UsuarioNoEncontradoException;
 import com.gianluka.source.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/login")
 public class UserController {
 	
 	@Autowired
@@ -40,16 +43,27 @@ public class UserController {
 	public List<User> listAllInactive(){
 		return serviceUser.listfindAllInactive();
 	}
-	@CrossOrigin(origins = "http://localhost:4200")
+	
 	@PostMapping("/login")
 	@ResponseBody
-	public User login(@RequestBody LoginDto loginRequest) {
-	    String usuUsuario = loginRequest.getUsuUsuario();
-	    String claUsuario = loginRequest.getClaUsuario();
-	    String activoUsuario = "A";
+	public ResponseEntity<?> login(@RequestBody LoginDto loginRequest) {
+	    try {
+	        // Lógica de inicio de sesión
+	        String usuUsuario = loginRequest.getUsuUsuario();
+	        String claUsuario = loginRequest.getClaUsuario();
+	        String activoUsuario = "A";
 
-	    User usuario = serviceUser.findByUsuUsuarioAndClaUsuarioAndActivoUsuario(usuUsuario, claUsuario, activoUsuario);
-	    return usuario;
+	        User usuario = serviceUser.findByUsuUsuarioAndClaUsuarioAndActivoUsuario(usuUsuario, claUsuario, activoUsuario);
+
+	        // Usuario encontrado, devuelve el usuario
+	        return ResponseEntity.ok(usuario);
+	    } catch (UsuarioNoEncontradoException e) {
+	        // Usuario no encontrado, devuelve un código de estado 404 (Not Found)
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    } catch (Exception ex) {
+	        // Otros errores, maneja de acuerdo a tus necesidades
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error desconocido");
+	    }
 	}
 	
 	@GetMapping("/find/{idUser}")

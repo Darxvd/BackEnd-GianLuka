@@ -11,5 +11,8 @@ public interface PersonService {
 	public Person update(Person objPerson);
 	public Person findByIdPerson(int idPerson);
 	public void delete(Person objPerson);
-	public List<Person> listPersonByName(String nombre);
+	public List<Person> listPersonByNameActive(String nombre);
+	public List<Person> listPersonByNameInactive(String nombre);
+	public List<Person> listPersonByTypeActive(int id);
+	public List<Person> listPersonByTypeInactive(int id);
 }
