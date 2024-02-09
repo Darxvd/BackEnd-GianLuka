@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gianluka.source.entity.User;
+import com.gianluka.source.exception.UsuarioNoEncontradoException;
 import com.gianluka.source.repository.UserRepository;
 import com.gianluka.source.service.UserService;
+
+import io.micrometer.common.util.StringUtils;
 
 @Service
 public class UserServiceImple implements UserService{
@@ -53,7 +56,20 @@ public class UserServiceImple implements UserService{
 	@Override
 	public User findByUsuUsuarioAndClaUsuarioAndActivoUsuario(String usuUsuario, String claUsuario,
 			String activoUsuario) {
-		return userRepository.findByUsuUsuarioAndClaUsuarioAndActivoUsuario(usuUsuario, claUsuario, "A");
+	    // Validaciones
+	    if (StringUtils.isEmpty(usuUsuario) || StringUtils.isEmpty(claUsuario)) {
+	        throw new IllegalArgumentException("Nombre de usuario y contraseña son requeridos");
+	    }
+
+	    // Buscar usuario en la base de datos
+	    User usuario = userRepository.findByUsuUsuarioAndClaUsuarioAndActivoUsuario(usuUsuario, claUsuario, activoUsuario);
+
+	    // Validar si el usuario no existe
+	    if (usuario == null) {
+	        throw new UsuarioNoEncontradoException("Usuario no encontrado");
+	    }
+
+	    return usuario;
 	}
 	
 
